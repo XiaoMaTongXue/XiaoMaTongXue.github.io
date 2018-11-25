@@ -1,69 +1,193 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>我在这里</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>
+    body{
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      display: flex;
+      background: white;
+      justify-content: center;
+    }
+    .page {
+      width: 375px;
+      height: 100%;
+      background: url(./img/bg.jpg);
+      background-size: 100%;
+      background-repeat: no-repeat;
+    }
+    .digitals {
+      display: flex;
+    }
 
-<style type="text/css">
-@font-face {
-	font-family: digit;
-	src: url('digital-7_mono.ttf') format("truetype");
-}
-</style>
+    .digital {
+      margin: 1px;
+      height: 12px;
+      width: 12px;
+      background: grey
+    }
 
-<link href="css/default.css" type="text/css" rel="stylesheet" />
-<script type="text/javascript" src="js/jquery.js"></script>
-<script type="text/javascript" src="js/garden.js"></script>
-<script type="text/javascript" src="js/functions.js"></script>
+    .on-true {
+      background: black
+    }
 
+    .info {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 231px;
+      padding-right: 13px;
+    }
+
+    .avatar {
+      border: 2px solid white;
+      width:86px;
+      height: 86px;
+      background-size: cover;
+      background-image: url(./img/avatar.jpg)
+    }
+    .passed-time {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .line {
+      border: 1px solid #e7e7e7;
+      border-top: 0;
+      margin: 20px;
+    }
+    .line > div {
+      width: 4px;
+      background: #e7e7e7;
+      height: 4px;
+      border: 3px solid white;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      border-radius: 50%;
+    }
+  </style>
+  <script>
+    function passedTime() {
+      var passed = (Date.now() - 1397270475 * 1000) / 1000 | 0
+      var s = passed % 60
+      var m = (passed / 60 | 0) % 60
+      var h = (passed / 3600 | 0) % 24
+      var d = (passed / 86400 | 0) % 30
+      var M = (passed / 2592000 | 0) % 12
+      var y = (passed / 31536000 | 0)
+      return [y, M, d, h, m, s]
+    }
+
+    function bin(num) {
+      return num.toString(2).split('').map(
+        function (digital) {
+          return digital === '1'
+        }
+      )
+    }
+
+    function showBin(num, selector) {
+      var ele = document.querySelector(selector)
+      var digitals = bin(num)
+      while (digitals.length < 6) {
+        digitals.unshift(false)
+      }
+      for (var i = 0; i < ele.children.length; i++) {
+        ele.children[i].classList.remove(
+          'on-' + (!digitals[i])
+        )
+        ele.children[i].classList.add(
+          'on-' + (digitals[i])
+        )
+      }
+    }
+
+    window.addEventListener('load', () => {
+      setInterval(() => {
+        // const [y,M,d,h,m,s] = passedTime()
+        var digitals = ['.year', '.month', '.day', '.hour', '.min', '.second']
+        var p = passedTime()
+        for (var i = 0; i < digitals.length; i++) {
+          showBin(
+            p[i],
+            digitals[i]
+          )
+        }
+      }, 1000)
+    })
+
+  </script>
 </head>
 
 <body>
-
-<div id="mainDiv">
-	<div id="content">
-		<div id="loveHeart">
-			<canvas id="garden"></canvas>
-			<div id="words">
-				<div id="messages">
-					<div  style="color:#ffe">我在这里</div>
-					<div id="elapseClock"></div>
-				</div>
-				<div id="loveu">
-					 
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript">
-var offsetX = $("#loveHeart").width() / 2;
-var offsetY = $("#loveHeart").height() / 2 - 55;
-var together = new Date(1397270475*1000);
-
-
-if (!document.createElement('canvas').getContext) {
-	var msg = document.createElement("div");
-	msg.id = "errorMsg";
-	msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+"; 
-	document.body.appendChild(msg);
-	$("#code").css("display", "none")
-	$("#copyright").css("position", "absolute");
-	$("#copyright").css("bottom", "10px");
-	document.execCommand("stop");
-} else {
-	
-		startHeartAnimation();
-	 
-	timeElapse(together);
-	setInterval(function () {
-		timeElapse(together);
-	}, 500);
-
-	adjustCodePosition();
-}
-</script>
-<a href="https://github.com/xuanfeng/HTML5-love-you">Author</a>
+  <div class="page">
+      <div class="info">
+          <div class="avatar">
+          </div>
+        </div>
+        <div class="line">
+          <div></div>
+        </div>
+        <div class="passed-time">
+            <div class="year digitals">
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+              </div>
+              <div class="month digitals">
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+              </div>
+              <div class="day digitals">
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+              </div>
+            
+              <div class="hour digitals">
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+              </div>
+              <div class="min digitals">
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+              </div>
+              <div class="second digitals">
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+                <div class="digital"></div>
+              </div>
+        </div>
+  </div>
+ 
 </body>
+
 </html>
